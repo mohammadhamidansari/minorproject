@@ -1,0 +1,132 @@
+/* ── CareerPortal Styles ── */
+
+/* ── CARD ANIMATIONS ── */
+.card-listings {
+    transition: all 0.25s ease-in-out;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.card-listings:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 82, 255, 0.1) !important;
+    border-color: #0052ff !important;
+}
+
+/* ── BADGES ── */
+.badge {
+    font-weight: 500;
+    font-size: 0.78rem;
+}
+
+/* ── BUTTONS ── */
+.btn-primary {
+    background-color: #0052ff;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #003dd4;
+}
+
+/* ── CARD BODY ── */
+.card-listings .card-body {
+    display: flex;
+    flex-direction: column;
+}
+.card-listings .card-text {
+    flex-grow: 1;
+}
+
+/* ── JOB DETAIL PAGE ── */
+.job-card {
+    border-radius: 15px;
+    border: none;
+    overflow: hidden;
+}
+.company-header {
+    background: #fff;
+    padding: 40px;
+    border-bottom: 1px solid #eee;
+}
+.company-logo {
+    max-height: 100px;
+    width: auto;
+    object-fit: contain;
+}
+.description-box {
+    line-height: 1.8;
+    color: #333;
+}
+.btn-apply {
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+.meta-box {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+    font-family: 'DM Sans', sans-serif;
+}
+.navbar-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+}
+
+/* ── TYPE INDICATORS (Home page) ── */
+.type-indicator {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    z-index: 2;
+}
+.type-api { background: #e8f0ff; color: #0052ff; }
+.type-added { background: #d1fae5; color: #065f46; }
+.type-zhcet { background: #fff3e0; color: #e65100; }
+
+/* ── CV REQUIRED BADGE ── */
+.cv-required {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #fff3e0;
+    color: #e65100;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* ── ALERT ── */
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+/* ── SECTION TABS ── */
+.section-tabs {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 72px;
+    z-index: 50;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ── FLASH MESSAGES ── */
+.flash-container {
+    position: fixed;
+    top: 88px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 360px;
+}

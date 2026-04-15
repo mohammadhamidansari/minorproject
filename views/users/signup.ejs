@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | CareerPortal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+            padding: 60px 56px; color: #fff; position: relative; overflow: hidden;
+        }
+        .left-panel::before {
+            content: ''; position: absolute; top: -120px; right: -80px;
+            width: 350px; height: 350px; background: rgba(0,82,255,.08); border-radius: 50%;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 48px; }
+        .brand-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; }
+        .brand-text span { color: #0052ff; }
+        .left-panel h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.2; margin-bottom: 16px; }
+        .left-panel p { opacity: .75; line-height: 1.7; max-width: 340px; }
+
+        .steps-list { margin-top: 40px; display: flex; flex-direction: column; gap: 20px; }
+        .step-row { display: flex; align-items: flex-start; gap: 14px; }
+        .step-num { width: 30px; height: 30px; background: #0052ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .85rem; flex-shrink: 0; }
+        .step-text .title { font-weight: 600; font-size: .9rem; margin-bottom: 2px; }
+        .step-text .desc { font-size: .8rem; opacity: .6; }
+
+        /* Right Panel */
+        .right-panel {
+            background: #f5f6fa; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 48px 40px; overflow-y: auto;
+        }
+        .auth-card {
+            background: #fff; border-radius: 20px;
+            padding: 40px; width: 100%; max-width: 460px;
+            box-shadow: 0 4px 24px rgba(0,0,0,.07);
+        }
+        .auth-card h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; margin-bottom: 4px; }
+        .auth-card .sub { color: #6b7280; margin-bottom: 24px; font-size: .9rem; }
+        .form-label { font-weight: 600; font-size: .82rem; color: #374151; margin-bottom: 5px; }
+        .form-control, .form-select {
+            border-radius: 10px; padding: 10px 14px;
+            border: 1.5px solid #e5e7eb; font-family: 'DM Sans', sans-serif; transition: border-color .2s;
+        }
+        .form-control:focus, .form-select:focus { border-color: #0052ff; box-shadow: 0 0 0 3px rgba(0,82,255,.1); }
+        .btn-auth {
+            background: #0052ff; color: #fff; border: none;
+            padding: 12px; border-radius: 10px; font-weight: 700;
+            width: 100%; cursor: pointer; transition: all .2s; font-size: .95rem;
+        }
+        .btn-auth:hover { background: #003dd4; transform: translateY(-1px); }
+        .auth-link { color: #0052ff; text-decoration: none; font-weight: 600; }
+        .auth-link:hover { text-decoration: underline; }
+        .section-divider { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin: 20px 0 12px; display: flex; align-items: center; gap: 10px; }
+        .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+
+        @media (max-width: 768px) {
+            body { grid-template-columns: 1fr; }
+            .left-panel { display: none; }
+            .right-panel { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+        <div class="brand">
+            <img src="/images/logo.png" alt="logo" width="36" style="border-radius:8px;background:#fff;padding:3px;">
+            <div class="brand-text">Career<span>Portal</span></div>
+        </div>
+        <h2>Start your<br>journey ✨</h2>
+        <p>Create your free account and get access to hundreds of internships and job opportunities.</p>
+        <div class="steps-list">
+            <div class="step-row">
+                <div class="step-num">1</div>
+                <div class="step-text">
+                    <div class="title">Create Your Account</div>
+                    <div class="desc">Sign up with your AMU details</div>
+                </div>
+            </div>
+            <div class="step-row">
+                <div class="step-num">2</div>
+                <div class="step-text">
+                    <div class="title">Browse Opportunities</div>
+                    <div class="desc">Global, community & ZHCET listings</div>
+                </div>
+            </div>
+            <div class="step-row">
+                <div class="step-num">3</div>
+                <div class="step-text">
+                    <div class="title">Apply & Get Hired</div>
+                    <div class="desc">Upload CV for ZHCET roles</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+        <div class="auth-card">
+            <h3>Create Account</h3>
+            <p class="sub">Join the ZHCET CareerPortal community</p>
+
+            <% if (typeof error !== 'undefined' && error && error.length > 0) { %>
+            <div class="alert alert-danger rounded-3 mb-3 py-2 px-3" style="font-size:.85rem;border:none;background:#fee2e2;color:#991b1b;">
+                <i class="fas fa-exclamation-circle me-1"></i> <%= error %>
+            </div>
+            <% } %>
+
+            <form action="/signup" method="POST">
+                <!-- Personal Info -->
+                <div class="section-divider">Personal Info</div>
+                <div class="mb-3">
+                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" placeholder="Your full name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                    <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password <span class="text-danger">*</span></label>
+                    <input type="password" name="password" class="form-control" placeholder="Min. 6 characters" required minlength="6">
+                </div>
+
+                <!-- Academic Info -->
+                <div class="section-divider">Academic Details</div>
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="form-label">Course</label>
+                        <select name="course" class="form-select">
+                            <option value="B.Tech">B.Tech</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Year <span class="text-danger">*</span></label>
+                        <select name="year" class="form-select" required>
+                            <option value="">Select Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Branch</label>
+                    <select name="branch" class="form-select">
+                        <option value="Computer Engineering">Computer Engineering</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-auth">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+            </form>
+
+            <div class="text-center mt-3" style="font-size:.88rem;color:#6b7280;">
+                Already have an account?
+                <a href="/login" class="auth-link">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

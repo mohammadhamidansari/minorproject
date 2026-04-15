@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= listing.title %> | ZHCET | CareerPortal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background: #f5f6fa; }
+        .zhcet-hero { background: linear-gradient(135deg, #e65100, #bf360c); color: #fff; padding: 48px 0 32px; }
+        .zhcet-badge-lg { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.2); padding: 6px 14px; border-radius: 100px; font-size: .8rem; font-weight: 600; margin-bottom: 16px; }
+        .detail-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,.06); margin-bottom: 24px; }
+        .meta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+        .meta-item { background: #f8f9fa; border-radius: 10px; padding: 14px 16px; }
+        .meta-item .label { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #9ca3af; margin-bottom: 4px; }
+        .meta-item .value { font-weight: 600; color: #111; }
+
+        /* Application Form */
+        .apply-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,.06); border: 2px solid #fed7aa; }
+        .apply-card h4 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 24px; }
+        .cv-upload-area {
+            border: 2px dashed #fed7aa; border-radius: 12px;
+            padding: 40px 20px; text-align: center;
+            background: #fff8f3; cursor: pointer; transition: all .2s;
+        }
+        .cv-upload-area:hover { border-color: #e65100; background: #fff3e0; }
+        .cv-upload-area i { font-size: 2.5rem; color: #e65100; margin-bottom: 12px; }
+        .btn-apply-zhcet {
+            background: #e65100; color: #fff; border: none;
+            padding: 14px 32px; border-radius: 10px;
+            font-weight: 600; font-size: 1rem; width: 100%;
+            transition: all .25s; cursor: pointer;
+        }
+        .btn-apply-zhcet:hover { background: #bf360c; transform: translateY(-1px); }
+
+        /* Already applied state */
+        .applied-banner { background: #d1fae5; border: 1.5px solid #6ee7b7; border-radius: 12px; padding: 20px 24px; display: flex; align-items: center; gap: 12px; }
+        .applied-banner i { font-size: 1.5rem; color: #059669; }
+        .applied-banner h6 { font-weight: 700; color: #065f46; margin: 0 0 2px; }
+        .applied-banner p { color: #047857; margin: 0; font-size: .85rem; }
+    </style>
+</head>
+<body>
+    <%- include("../includes/navbar.ejs") %>
+
+    <!-- ZHCET Hero -->
+    <div class="zhcet-hero">
+        <div class="container">
+            <div class="zhcet-badge-lg"><i class="fas fa-graduation-cap"></i> ZHCET Exclusive Listing</div>
+            <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;margin-bottom:8px;"><%= listing.title %></h1>
+            <p style="opacity:.85;font-size:1rem;">ZHCET · <%= listing.department %> &nbsp;|&nbsp; Posted <%= new Date(listing.createdAt).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'}) %></p>
+        </div>
+    </div>
+
+    <div class="container py-4">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <!-- Meta Grid -->
+                <div class="detail-card">
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <div class="label"><i class="fas fa-clock me-1"></i>Duration</div>
+                            <div class="value"><%= listing.duration || 'To be discussed' %></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label"><i class="fas fa-rupee-sign me-1"></i>Stipend</div>
+                            <div class="value"><%= listing.stipend || 'Unpaid / Certificate' %></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label"><i class="fas fa-users me-1"></i>Seats Available</div>
+                            <div class="value"><%= listing.seats || 'Limited' %></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label"><i class="fas fa-calendar me-1"></i>Deadline</div>
+                            <div class="value"><%= listing.deadline ? new Date(listing.deadline).toLocaleDateString('en-IN') : 'Open' %></div>
+                        </div>
+                    </div>
+                    <h5 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;">About the Role</h5>
+                    <div style="line-height:1.8;color:#374151;"><%= listing.description %></div>
+
+                    <% if (listing.requirements) { %>
+                    <h6 style="font-family:'Syne',sans-serif;font-weight:700;margin-top:24px;margin-bottom:12px;">Requirements</h6>
+                    <div style="line-height:1.8;color:#374151;"><%= listing.requirements %></div>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <% if (!currUser) { %>
+                <!-- Not logged in -->
+                <div class="apply-card text-center">
+                    <i class="fas fa-lock fa-2x text-muted mb-3"></i>
+                    <h5 style="font-family:'Syne',sans-serif;font-weight:700;">Login to Apply</h5>
+                    <p class="text-muted mb-4">You must be logged in to apply for ZHCET listings.</p>
+                    <a href="/login" class="btn btn-primary w-100 mb-2">Login</a>
+                    <a href="/signup" class="btn btn-outline-secondary w-100">Sign Up</a>
+                </div>
+                <% } else if (hasApplied) { %>
+                <!-- Already Applied -->
+                <div class="apply-card">
+                    <div class="applied-banner">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h6>Application Submitted!</h6>
+                            <p>You've already applied for this position. We'll notify you of updates.</p>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <span class="badge bg-success px-3 py-2 fs-6">✓ Applied</span>
+                    </div>
+                </div>
+                <% } else { %>
+                <!-- Apply Form -->
+                <div class="apply-card">
+                    <h4><i class="fas fa-paper-plane me-2" style="color:#e65100"></i>Apply Now</h4>
+                    <% if (error && error.length > 0) { %>
+                    <div class="alert alert-danger"><%= error %></div>
+                    <% } %>
+                    <form action="/zhcet/<%= listing._id %>/apply" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Cover Note <span class="text-muted fw-normal">(optional)</span></label>
+                            <textarea name="coverNote" class="form-control" rows="3" placeholder="Tell the faculty why you're interested..."></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Upload CV <span class="text-danger">*</span></label>
+                            <div class="cv-upload-area" id="uploadArea" onclick="document.getElementById('cvFile').click()">
+                                <i class="fas fa-file-pdf" id="uploadIcon"></i>
+                                <p class="mb-1 fw-semibold" id="uploadText">Click to upload your CV</p>
+                                <p class="text-muted small mb-0">PDF only · Max 5MB</p>
+                            </div>
+                            <input type="file" name="cv" id="cvFile" accept=".pdf" required style="display:none" onchange="handleFile(this)">
+                            <div id="fileName" class="mt-2 small text-success" style="display:none;"></div>
+                        </div>
+                        <button type="submit" class="btn-apply-zhcet">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Application
+                        </button>
+                    </form>
+                </div>
+                <% } %>
+
+                <!-- Back link -->
+                <div class="text-center mt-3">
+                    <a href="/home?type=zhcet" class="text-muted small"><i class="fas fa-arrow-left me-1"></i>Back to ZHCET Listings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function handleFile(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('uploadIcon').className = 'fas fa-check-circle';
+                document.getElementById('uploadIcon').style.color = '#059669';
+                document.getElementById('uploadText').textContent = file.name;
+                document.getElementById('fileName').style.display = 'block';
+                document.getElementById('fileName').textContent = `✓ ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+            }
+        }
+    </script>
+</body>
+</html>

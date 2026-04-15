@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerPortal — Find Your Future</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --ink: #0a0a12;
+            --blue: #0052ff;
+            --blue-light: #e8f0ff;
+            --accent: #ff4d00;
+            --soft: #f5f6fa;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #fff;
+            color: var(--ink);
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        .land-nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 18px 0;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: all .3s;
+        }
+        .nav-inner { max-width: 1200px; margin: auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .nav-logo span { color: var(--blue); }
+        .nav-links { display: flex; gap: 8px; align-items: center; }
+        .nav-links a { text-decoration: none; font-size: .9rem; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all .2s; color: var(--ink); }
+        .nav-links a:hover { background: var(--soft); }
+        .nav-links .btn-login { border: 1.5px solid var(--border); }
+        .nav-links .btn-signup { background: var(--ink); color: #fff; }
+        .nav-links .btn-signup:hover { background: var(--blue); }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center;
+            padding: 120px 32px 80px;
+            background: linear-gradient(135deg, #fff 0%, #f0f4ff 60%, #e8f0ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -200px; right: -200px;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(0,82,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -100px; left: -100px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,77,0,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-inner { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--blue-light); color: var(--blue);
+            padding: 6px 14px; border-radius: 100px;
+            font-size: .8rem; font-weight: 600; letter-spacing: .04em;
+            text-transform: uppercase; margin-bottom: 24px;
+        }
+        .hero-tag .dot { width: 7px; height: 7px; background: var(--blue); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.8rem, 5vw, 4.2rem);
+            font-weight: 800; line-height: 1.1;
+            margin-bottom: 24px; letter-spacing: -.02em;
+        }
+        .hero h1 .accent { color: var(--blue); position: relative; }
+        .hero h1 .accent::after {
+            content: '';
+            position: absolute; bottom: 4px; left: 0; width: 100%; height: 4px;
+            background: var(--blue); border-radius: 2px; opacity: .25;
+        }
+        .hero p { font-size: 1.1rem; color: var(--muted); line-height: 1.7; margin-bottom: 40px; max-width: 480px; }
+
+        .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn-hero-primary {
+            background: var(--blue); color: #fff;
+            padding: 14px 32px; border-radius: 10px;
+            font-weight: 600; font-size: 1rem; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all .25s; box-shadow: 0 4px 20px rgba(0,82,255,.3);
+        }
+        .btn-hero-primary:hover { background: #003dd4; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,82,255,.4); color: #fff; }
+        .btn-hero-secondary {
+            background: #fff; color: var(--ink);
+            padding: 14px 32px; border-radius: 10px;
+            font-weight: 600; font-size: 1rem; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1.5px solid var(--border); transition: all .25s;
+        }
+        .btn-hero-secondary:hover { border-color: var(--ink); transform: translateY(-2px); color: var(--ink); }
+
+        .hero-stats { display: flex; gap: 40px; margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .stat-item .num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; }
+        .stat-item .lbl { font-size: .85rem; color: var(--muted); margin-top: 2px; }
+
+        /* Hero visual side */
+        .hero-visual { position: relative; }
+        .hero-card-stack { position: relative; height: 460px; }
+        .job-preview {
+            position: absolute;
+            background: #fff; border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,.1);
+            padding: 20px 24px;
+            transition: all .3s;
+        }
+        .job-preview:nth-child(1) { top: 0; left: 20px; right: 0; z-index: 3; animation: float1 4s ease-in-out infinite; }
+        .job-preview:nth-child(2) { top: 140px; left: 0; right: 20px; z-index: 2; animation: float2 4s ease-in-out infinite; }
+        .job-preview:nth-child(3) { top: 290px; left: 20px; right: -10px; z-index: 1; opacity: .7; animation: float3 4s ease-in-out infinite; }
+
+        @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        @keyframes float3 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+        .jp-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .jp-logo { width: 40px; height: 40px; border-radius: 10px; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .jp-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; }
+        .jp-company { font-size: .8rem; color: var(--muted); }
+        .jp-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+        .jp-badge { padding: 3px 10px; border-radius: 100px; font-size: .75rem; font-weight: 500; }
+        .jp-badge.remote { background: #d1fae5; color: #065f46; }
+        .jp-badge.loc { background: var(--blue-light); color: var(--blue); }
+        .jp-badge.zhcet { background: #fff3e0; color: #e65100; }
+
+        /* ── FEATURES ── */
+        .features { padding: 100px 32px; background: var(--ink); color: #fff; }
+        .features-inner { max-width: 1200px; margin: auto; }
+        .section-label { font-size: .8rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
+        .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; }
+        .feat-card {
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 16px; padding: 32px;
+            transition: all .3s;
+        }
+        .feat-card:hover { background: rgba(0,82,255,.15); border-color: rgba(0,82,255,.4); transform: translateY(-4px); }
+        .feat-icon { width: 52px; height: 52px; background: var(--blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 20px; }
+        .feat-title { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+        .feat-desc { color: rgba(255,255,255,.6); line-height: 1.7; font-size: .9rem; }
+
+        /* ── LISTING TYPES ── */
+        .listing-types { padding: 100px 32px; background: var(--soft); }
+        .listing-inner { max-width: 1200px; margin: auto; }
+        .listing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+        .listing-card {
+            background: #fff; border-radius: 20px;
+            padding: 40px 32px;
+            border: 2px solid transparent;
+            transition: all .3s; cursor: pointer; text-decoration: none; color: inherit;
+            display: block;
+        }
+        .listing-card:hover { border-color: var(--blue); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,82,255,.1); color: inherit; }
+        .listing-card.featured { border-color: var(--accent); background: linear-gradient(135deg, #fff 0%, #fff8f5 100%); }
+        .lc-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 20px; }
+        .lc-icon.api { background: var(--blue-light); }
+        .lc-icon.added { background: #d1fae5; }
+        .lc-icon.zhcet { background: #fff3e0; }
+        .lc-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+        .lc-desc { color: var(--muted); line-height: 1.6; font-size: .9rem; margin-bottom: 20px; }
+        .lc-tag { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: .75rem; font-weight: 600; }
+        .lc-tag.api { background: var(--blue-light); color: var(--blue); }
+        .lc-tag.added { background: #d1fae5; color: #065f46; }
+        .lc-tag.zhcet { background: #fff3e0; color: #e65100; }
+
+        /* ── HOW IT WORKS ── */
+        .how { padding: 100px 32px; background: #fff; }
+        .how-inner { max-width: 1000px; margin: auto; text-align: center; }
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 60px; position: relative; }
+        .steps::before { content: ''; position: absolute; top: 28px; left: 12%; width: 76%; height: 2px; background: linear-gradient(90deg, var(--blue), var(--accent)); opacity: .2; }
+        .step-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .step-num { width: 56px; height: 56px; background: var(--blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; margin-bottom: 16px; position: relative; z-index: 1; }
+        .step-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+        .step-desc { color: var(--muted); font-size: .85rem; line-height: 1.6; }
+
+        /* ── CTA SECTION ── */
+        .cta-section {
+            padding: 100px 32px;
+            background: linear-gradient(135deg, var(--blue) 0%, #003dd4 100%);
+            text-align: center; color: #fff;
+        }
+        .cta-section h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 16px; }
+        .cta-section p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+        .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn-cta-white { background: #fff; color: var(--blue); padding: 14px 36px; border-radius: 10px; font-weight: 600; text-decoration: none; transition: all .25s; }
+        .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); color: var(--blue); }
+        .btn-cta-outline { border: 2px solid rgba(255,255,255,.5); color: #fff; padding: 14px 36px; border-radius: 10px; font-weight: 600; text-decoration: none; transition: all .25s; }
+        .btn-cta-outline:hover { border-color: #fff; background: rgba(255,255,255,.1); color: #fff; }
+
+        /* ── FOOTER ── */
+        footer { background: var(--ink); color: rgba(255,255,255,.5); text-align: center; padding: 32px; font-size: .85rem; }
+        footer a { color: rgba(255,255,255,.7); text-decoration: none; }
+
+        @media (max-width: 992px) {
+            .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+            .hero-visual { display: none; }
+            .features-grid, .listing-grid, .steps { grid-template-columns: 1fr; }
+            .steps::before { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="land-nav">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo">
+            <img src="/images/logo.png" alt="logo" width="36" style="border-radius:8px;">
+            Career<span>Portal</span>
+        </a>
+        <div class="nav-links">
+            <!-- <a href="/home" class="btn-login">Browse Jobs</a> -->
+            <a href="/admin/login" style="color: var(--muted); font-size:.85rem;">Admin</a>
+            <% if (!currUser) { %>
+                <a href="/login" class="btn-login">Login</a>
+                <a href="/signup" class="btn-signup">Sign Up</a>
+            <% } else { %>
+                <a href="/home" class="btn-login">Dashboard</a>
+                <a href="/logout" style="background:#fee2e2;color:#dc2626;padding:8px 16px;border-radius:8px;">Logout</a>
+            <% } %>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-content">
+            <div class="hero-tag"><div class="dot"></div> AMU ZHCET Career Platform</div>
+            <h1>
+                Launch Your<br>
+                <span class="accent">Career</span> From<br>
+                Campus
+            </h1>
+            <p>Discover internships and jobs from global companies, community listings, and exclusive ZHCET opportunities — all in one place built for AMU students.</p>
+            <!-- <div class="hero-cta">
+                <a href="/home" class="btn-hero-primary">
+                    <i class="fas fa-search"></i> Browse Listings
+                </a>
+                <a href="/signup" class="btn-hero-secondary">
+                    Create Account <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="num">50+</div>
+                    <div class="lbl">Live Jobs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">3</div>
+                    <div class="lbl">Listing Types</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">100%</div>
+                    <div class="lbl">Free to Use</div>
+                </div>
+            </div> -->
+        </div>
+        <div class="hero-visual">
+            <div class="hero-cta">
+                <a href="/home" class="btn-hero-primary">
+                    <i class="fas fa-search"></i> Browse Listings
+                </a>
+                <a href="/signup" class="btn-hero-secondary">
+                    Create Account <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="num">50+</div>
+                    <div class="lbl">Live Jobs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">3</div>
+                    <div class="lbl">Listing Types</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">100%</div>
+                    <div class="lbl">Free to Use</div>
+                </div>
+            </div>
+            <!-- <div class="hero-card-stack">
+                <div class="job-preview">
+                    <div class="jp-header">
+                        <div class="jp-logo">🏢</div>
+                        <div>
+                            <div class="jp-title">Software Engineer Intern</div>
+                            <div class="jp-company">TechCorp GmbH · Berlin</div>
+                        </div>
+                    </div>
+                    <div class="jp-badges">
+                        <span class="jp-badge remote">Remote</span>
+                        <span class="jp-badge loc">Europe</span>
+                    </div>
+                </div>
+                <div class="job-preview">
+                    <div class="jp-header">
+                        <div class="jp-logo">🎓</div>
+                        <div>
+                            <div class="jp-title">Project Trainee — CS Dept.</div>
+                            <div class="jp-company">ZHCET, AMU · Aligarh</div>
+                        </div>
+                    </div>
+                    <div class="jp-badges">
+                        <span class="jp-badge zhcet">ZHCET Exclusive</span>
+                    </div>
+                </div>
+                <div class="job-preview">
+                    <div class="jp-header">
+                        <div class="jp-logo">🚀</div>
+                        <div>
+                            <div class="jp-title">Frontend Developer</div>
+                            <div class="jp-company">StartupXYZ · Remote</div>
+                        </div>
+                    </div>
+                    <div class="jp-badges">
+                        <span class="jp-badge remote">Community</span>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<!-- <section class="features">
+    <div class="features-inner">
+        <div class="section-label">Why Choose Us</div>
+        <h2 class="section-title">Everything you need to<br>land your dream role</h2>
+        <div class="features-grid">
+            <div class="feat-card">
+                <div class="feat-icon"><i class="fas fa-bolt" style="color:#fff"></i></div>
+                <div class="feat-title">Live Job Feed</div>
+                <div class="feat-desc">Hundreds of fresh opportunities pulled daily from global job boards — filtered for tech, engineering, and CS roles.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><i class="fas fa-university" style="color:#fff"></i></div>
+                <div class="feat-title">ZHCET Exclusive</div>
+                <div class="feat-desc">Internships and traineeships posted directly by ZHCET — apply with your CV and track your application status.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><i class="fas fa-users" style="color:#fff"></i></div>
+                <div class="feat-title">Community Listings</div>
+                <div class="feat-desc">AMU students and alumni post opportunities they discover. Help each other grow by sharing leads.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><i class="fas fa-shield-alt" style="color:#fff"></i></div>
+                <div class="feat-title">Secure Auth</div>
+                <div class="feat-desc">Your account is protected with bcrypt hashing, session management, and secure login flows.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><i class="fas fa-chart-bar" style="color:#fff"></i></div>
+                <div class="feat-title">Admin Dashboard</div>
+                <div class="feat-desc">ZHCET administrators can manage listings, review CV applications, and track all applicants in one place.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><i class="fas fa-mobile-alt" style="color:#fff"></i></div>
+                <div class="feat-title">Fully Responsive</div>
+                <div class="feat-desc">Browse jobs on any device — designed mobile-first with a clean, distraction-free interface.</div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<!-- LISTING TYPES -->
+<section class="listing-types">
+    <div class="listing-inner">
+        <div class="section-label" style="color:var(--blue)">Three Listing Types</div>
+        <h2 class="section-title" style="color:var(--ink)">Choose what fits you best</h2>
+        <p style="color:var(--muted);font-size:1rem;max-width:500px;">Whether you want global opportunities, community finds, or campus-exclusive roles — we have it all.</p>
+        <div class="listing-grid">
+            <a href="/home?type=api" class="listing-card">
+                <div class="lc-icon api"><i class="fas fa-globe" style="color:var(--blue)"></i></div>
+                <div class="lc-title">Global Job Feed</div>
+                <div class="lc-desc">Thousands of live internships and jobs from top companies worldwide, updated daily via our API integration.</div>
+                <span class="lc-tag api">API Powered</span>
+            </a>
+            <a href="/home?type=added" class="listing-card">
+                <div class="lc-icon added"><i class="fas fa-plus-circle" style="color:#065f46"></i></div>
+                <div class="lc-title">Community Listings</div>
+                <div class="lc-desc">Listings added by AMU students and alumni. Share jobs you discover and help your peers find great opportunities.</div>
+                <span class="lc-tag added">Community</span>
+            </a>
+            <a href="/home?type=zhcet" class="listing-card featured">
+                <div class="lc-icon zhcet"><i class="fas fa-graduation-cap" style="color:#e65100"></i></div>
+                <div class="lc-title">ZHCET Listings</div>
+                <div class="lc-desc">Exclusive internships and project traineeships posted by ZHCET faculty. Apply directly with your CV uploaded.</div>
+                <span class="lc-tag zhcet">🎓 ZHCET Exclusive</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+    <div class="how-inner">
+        <div class="section-label" style="color:var(--blue)">How It Works</div>
+        <h2 class="section-title" style="color:var(--ink)">Get started in minutes</h2>
+        <div class="steps">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-title">Create Account</div>
+                <div class="step-desc">Sign up with your AMU email, course, and branch details.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-title">Browse Jobs</div>
+                <div class="step-desc">Filter by API, community, or ZHCET listings.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-title">Apply</div>
+                <div class="step-desc">Apply directly or upload your CV for ZHCET roles.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-title">Get Hired</div>
+                <div class="step-desc">Track your applications and land your dream role.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2>Ready to find your next opportunity?</h2>
+    <p>Join hundreds of ZHCET students already using CareerPortal.</p>
+    <div class="cta-buttons">
+        <a href="/signup" class="btn-cta-white">Create Free Account</a>
+        <a href="/home" class="btn-cta-outline">Browse Listings</a>
+    </div>
+</section>
+
+<footer>
+    <p>© 2025 CareerPortal · ZHCET, Aligarh Muslim University &nbsp;|&nbsp; <a href="/admin/login">Admin Login</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

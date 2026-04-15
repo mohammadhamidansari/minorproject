@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= listing.title %> | CareerPortal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background: #f5f6fa; }
+
+        .listing-hero {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            padding: 48px 0 40px; color: #fff;
+        }
+        .listing-hero-inner { max-width: 800px; margin: auto; padding: 0 24px; }
+        .community-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,.2); padding: 5px 12px;
+            border-radius: 100px; font-size: .78rem; font-weight: 600; margin-bottom: 16px;
+        }
+        .logo-circle {
+            width: 80px; height: 80px; background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,.12); flex-shrink: 0;
+        }
+        .detail-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,.06); margin-bottom: 20px; }
+        .detail-card h5 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 16px; }
+        .meta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+        .meta-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: #f3f4f6; border-radius: 100px; font-size: .85rem; font-weight: 500; color: #374151; }
+
+        .btn-apply-community {
+            background: #059669; color: #fff; border: none;
+            padding: 14px 32px; border-radius: 12px;
+            font-weight: 700; font-size: 1rem; width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all .25s; text-decoration: none;
+            box-shadow: 0 4px 20px rgba(5,150,105,.3);
+        }
+        .btn-apply-community:hover { background: #047857; transform: translateY(-2px); color: #fff; }
+
+        .posted-by { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: #f0fdf4; border-radius: 10px; border: 1px solid #d1fae5; }
+        .avatar { width: 36px; height: 36px; background: #059669; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: .9rem; }
+    </style>
+</head>
+<body>
+    <%- include("../includes/navbar.ejs") %>
+
+    <!-- Hero -->
+    <div class="listing-hero">
+        <div class="listing-hero-inner">
+            <div class="community-badge"><i class="fas fa-users"></i> Community Listing</div>
+            <div class="d-flex align-items-center gap-4 flex-wrap">
+                <div class="logo-circle">🏢</div>
+                <div>
+                    <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;margin-bottom:6px;"><%= listing.title %></h1>
+                    <p style="opacity:.85;font-size:1rem;margin:0;"><%= listing.company %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4" style="max-width:800px;">
+
+        <!-- Meta -->
+        <div class="detail-card">
+            <div class="meta-row">
+                <span class="meta-pill"><i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> <%= listing.location %></span>
+                <span class="meta-pill"><i class="fas fa-building" style="color:#0052ff;"></i> <%= listing.company %></span>
+                <span class="meta-pill"><i class="fas fa-calendar-alt" style="color:#9ca3af;"></i>
+                    Posted <%= new Date(listing.createdAt).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'}) %>
+                </span>
+            </div>
+
+            <% if (listing.applyUrl) { %>
+            <a href="<%= listing.applyUrl %>" target="_blank" class="btn-apply-community">
+                Apply Now <i class="fas fa-external-link-alt"></i>
+            </a>
+            <p class="text-center text-muted small mt-2">Opens the official application link</p>
+            <% } else { %>
+            <div class="text-center py-3" style="background:#f8f9fa;border-radius:12px;">
+                <i class="fas fa-envelope fa-2x text-muted mb-2"></i>
+                <p class="text-muted mb-0">Contact the poster for application details.</p>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- Description -->
+        <div class="detail-card">
+            <h5><i class="fas fa-file-alt me-2" style="color:#059669;"></i>About this Opportunity</h5>
+            <div style="line-height:1.85;color:#374151;font-size:.95rem;white-space:pre-wrap;"><%= listing.description %></div>
+        </div>
+
+        <!-- Posted By -->
+        <% if (listing.addedBy) { %>
+        <div class="detail-card">
+            <h5>Posted By</h5>
+            <div class="posted-by">
+                <div class="avatar"><%= listing.addedBy.name ? listing.addedBy.name.charAt(0).toUpperCase() : 'U' %></div>
+                <div>
+                    <div style="font-weight:600;"><%= listing.addedBy.name %></div>
+                    <div style="color:#6b7280;font-size:.82rem;"><%= listing.addedBy.email %></div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+        <div class="text-center mb-4">
+            <a href="/home?type=added" class="text-muted small">
+                <i class="fas fa-arrow-left me-1"></i>Back to Community Listings
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

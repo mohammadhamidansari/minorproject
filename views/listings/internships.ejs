@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Listings | CareerPortal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background: #f5f6fa; }
+
+        /* Section Tabs */
+        .section-tabs {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 0;
+            position: sticky; top: 72px; z-index: 50;
+            box-shadow: 0 2px 12px rgba(0,0,0,.05);
+        }
+        .tabs-inner { max-width: 1200px; margin: auto; padding: 0 24px; display: flex; gap: 0; }
+        .tab-btn {
+            padding: 18px 28px;
+            border: none; background: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .9rem; font-weight: 500;
+            color: #6b7280;
+            border-bottom: 3px solid transparent;
+            cursor: pointer; transition: all .2s;
+            display: flex; align-items: center; gap: 8px;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { color: #0052ff; }
+        .tab-btn.active { color: #0052ff; border-bottom-color: #0052ff; font-weight: 600; }
+        .tab-btn .tab-count {
+            background: #e8f0ff; color: #0052ff;
+            padding: 2px 8px; border-radius: 100px; font-size: .75rem; font-weight: 600;
+        }
+        .tab-btn.active .tab-count { background: #0052ff; color: #fff; }
+        .tab-btn .zhcet-badge { background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 100px; font-size: .72rem; font-weight: 600; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #0052ff 0%, #003dd4 100%);
+            color: #fff; padding: 40px 24px;
+        }
+        .page-header-inner { max-width: 1200px; margin: auto; }
+        .page-header h1 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 4px; }
+        .page-header p { opacity: .8; font-size: .95rem; }
+
+        /* Cards */
+        .jobs-grid { max-width: 1200px; margin: 32px auto; padding: 0 24px; }
+        .card-listings {
+            border-radius: 14px !important;
+            border: 1.5px solid #e5e7eb !important;
+            transition: all .25s;
+            background: #fff;
+        }
+        .card-listings:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,82,255,.1) !important;
+            border-color: #0052ff !important;
+        }
+        .company-logo-wrap {
+            height: 160px; display: flex; align-items: center; justify-content: center;
+            background: #f8f9fa; border-radius: 12px 12px 0 0; padding: 20px;
+        }
+        .type-indicator {
+            position: absolute; top: 12px; left: 12px;
+            padding: 3px 10px; border-radius: 100px; font-size: .7rem; font-weight: 600;
+        }
+        .type-api { background: #e8f0ff; color: #0052ff; }
+        .type-added { background: #d1fae5; color: #065f46; }
+        .type-zhcet { background: #fff3e0; color: #e65100; }
+
+        /* ZHCET CV badge */
+        .cv-required { display: inline-flex; align-items: center; gap: 5px; background: #fff3e0; color: #e65100; padding: 4px 10px; border-radius: 6px; font-size: .75rem; font-weight: 600; margin-bottom: 8px; }
+
+        /* Loading */
+        .loading-wrap { text-align: center; padding: 80px 20px; }
+        .spinner { width: 48px; height: 48px; border: 4px solid #e5e7eb; border-top-color: #0052ff; border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .section-panel { display: none; }
+        .section-panel.active { display: block; }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 80px 20px; }
+        .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: .4; }
+    </style>
+</head>
+<body>
+    <%- include("../includes/navbar.ejs") %>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-inner">
+            <h1><i class="fas fa-briefcase me-2"></i>Browse Listings</h1>
+            <p>Explore opportunities from global boards, community posts, and ZHCET exclusives</p>
+        </div>
+    </div>
+
+    <!-- Section Tabs -->
+    <div class="section-tabs">
+        <div class="tabs-inner">
+            <button class="tab-btn <%= activeTab === 'api' ? 'active' : '' %>" onclick="switchTab('api')">
+                <i class="fas fa-globe"></i> Global Jobs
+                <span class="tab-count" id="api-count"><%= allJobs ? allJobs.length : 0 %></span>
+            </button>
+            <button class="tab-btn <%= activeTab === 'added' ? 'active' : '' %>" onclick="switchTab('added')">
+                <i class="fas fa-plus-circle"></i> Community listings
+                <span class="tab-count" id="added-count"><%= addedListings ? addedListings.length : 0 %></span>
+            </button>
+            <button class="tab-btn <%= activeTab === 'zhcet' ? 'active' : '' %>" onclick="switchTab('zhcet')">
+                <i class="fas fa-graduation-cap"></i> ZHCET listings
+                <span class="zhcet-badge" id="zhcet-count">🎓 <%= zhcetListings ? zhcetListings.length : 0 %></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ── API LISTINGS PANEL ── -->
+    <div id="panel-api" class="section-panel <%= activeTab === 'api' ? 'active' : '' %>">
+        <div class="jobs-grid">
+            <div class="row g-4">
+                <% if (allJobs && allJobs.length > 0) { %>
+                    <% for(let job of allJobs) { %>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card card-listings h-100 shadow-sm position-relative">
+                            <span class="type-indicator type-api">API</span>
+                            <div class="company-logo-wrap">
+                                <img src="<%= job.company_logo %>" class="img-fluid" alt="<%= job.company_name %>" style="max-height:100%;max-width:140px;object-fit:contain;"
+                                    onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(job.company_name) %>&background=random&color=fff&size=128';">
+                            </div>
+                            <div class="card-body d-flex flex-column p-3">
+                                <h5 class="card-title fw-bold text-dark mb-1" style="font-size:1rem;"><%= job.title %></h5>
+                                <h6 class="card-subtitle mb-3 text-muted" style="font-size:.85rem;"><%= job.company_name %></h6>
+                                <div class="mb-3">
+                                    <span class="badge rounded-pill bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 me-1">
+                                        <i class="fa fa-map-marker-alt me-1"></i><%= job.location %>
+                                    </span>
+                                    <% if(job.remote) { %>
+                                    <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-2 py-1">
+                                        <i class="fa fa-laptop me-1"></i>Remote
+                                    </span>
+                                    <% } %>
+                                </div>
+                                <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
+                                    <a href="<%= job.url %>" target="_blank" class="btn btn-outline-dark btn-sm px-3">
+                                        Apply <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                    <a href="/home/<%= job.slug %>" class="btn btn-primary btn-sm px-3">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                <% } else { %>
+                <div class="col-12">
+                    <div class="empty-state">
+                        <div class="empty-icon">🌐</div>
+                        <h5>Loading global jobs...</h5>
+                        <p class="text-muted">Please try again in a moment.</p>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ADDED LISTINGS PANEL ── -->
+    <div id="panel-added" class="section-panel <%= activeTab === 'added' ? 'active' : '' %>">
+        <div class="jobs-grid">
+            <% if (currUser) { %>
+            <div class="d-flex justify-content-end mb-3">
+                <a href="/new" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Add a Listing</a>
+            </div>
+            <% } %>
+            <div class="row g-4">
+                <% if (addedListings && addedListings.length > 0) { %>
+                    <% for(let listing of addedListings) { %>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card card-listings h-100 shadow-sm position-relative">
+                            <span class="type-indicator type-added">Community</span>
+                            <div class="company-logo-wrap" style="background:#f0fdf4;">
+                                <div style="width:70px;height:70px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🏢</div>
+                            </div>
+                            <div class="card-body d-flex flex-column p-3">
+                                <h5 class="card-title fw-bold text-dark mb-1" style="font-size:1rem;"><%= listing.title %></h5>
+                                <h6 class="card-subtitle mb-2 text-muted" style="font-size:.85rem;"><%= listing.company %></h6>
+                                <p class="text-muted small mb-3" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><%= listing.description %></p>
+                                <div class="mb-3">
+                                    <span class="badge rounded-pill bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 me-1">
+                                        <i class="fa fa-map-marker-alt me-1"></i><%= listing.location %>
+                                    </span>
+                                </div>
+                                <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
+                                    <% if(listing.applyUrl) { %>
+                                    <a href="<%= listing.applyUrl %>" target="_blank" class="btn btn-outline-dark btn-sm px-3">
+                                        Apply <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                    <% } else { %>
+                                    <span class="text-muted small">Posted by community</span>
+                                    <% } %>
+                                    <a href="/listings/<%= listing._id %>" class="btn btn-success btn-sm px-3">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                <% } else { %>
+                <div class="col-12">
+                    <div class="empty-state">
+                        <div class="empty-icon">➕</div>
+                        <h5>No community listings yet</h5>
+                        <p class="text-muted">Be the first to <a href="/new">add a listing</a>!</p>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ZHCET LISTINGS PANEL ── -->
+    <div id="panel-zhcet" class="section-panel <%= activeTab === 'zhcet' ? 'active' : '' %>">
+        <div class="jobs-grid">
+            <div class="row g-4">
+                <% if (zhcetListings && zhcetListings.length > 0) { %>
+                    <% for(let listing of zhcetListings) { %>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card card-listings h-100 shadow-sm position-relative" style="border-color:#fed7aa !important;">
+                            <span class="type-indicator type-zhcet">🎓 ZHCET</span>
+                            <div class="company-logo-wrap" style="background:#fff8f3;">
+                                <div style="width:70px;height:70px;background:#fed7aa;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🎓</div>
+                            </div>
+                            <div class="card-body d-flex flex-column p-3">
+                                <h5 class="card-title fw-bold text-dark mb-1" style="font-size:1rem;"><%= listing.title %></h5>
+                                <h6 class="card-subtitle mb-2 text-muted" style="font-size:.85rem;">ZHCET · <%= listing.department %></h6>
+                                <div class="cv-required"><i class="fas fa-file-pdf"></i> CV Required</div>
+                                <p class="text-muted small mb-3" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><%= listing.description %></p>
+                                <div class="mb-2">
+                                    <% if(listing.stipend) { %>
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 me-1">
+                                        <i class="fas fa-rupee-sign me-1"></i><%= listing.stipend %>
+                                    </span>
+                                    <% } %>
+                                    <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle px-2 py-1">
+                                        <i class="fas fa-clock me-1"></i><%= listing.duration || 'Flexible' %>
+                                    </span>
+                                </div>
+                                <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
+                                    <% if (currUser) { %>
+                                        <a href="/zhcet/<%= listing._id %>/apply" class="btn btn-sm px-3" style="background:#e65100;color:#fff;border:none;">
+                                            Apply <i class="fas fa-paper-plane ms-1"></i>
+                                        </a>
+                                    <% } else { %>
+                                        <a href="/login" class="btn btn-outline-warning btn-sm px-3">Login to Apply</a>
+                                    <% } %>
+                                    <a href="/zhcet/<%= listing._id %>" class="btn btn-warning btn-sm px-3 text-dark fw-semibold">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                <% } else { %>
+                <div class="col-12">
+                    <div class="empty-state">
+                        <div class="empty-icon">🎓</div>
+                        <h5>No ZHCET listings available</h5>
+                        <p class="text-muted">Check back soon for campus-exclusive opportunities.</p>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`button[onclick="switchTab('${tab}')"]`).classList.add('active');
+            document.getElementById(`panel-${tab}`).classList.add('active');
+            history.replaceState(null, '', `/home?type=${tab}`);
+        }
+        // Set active tab from URL
+        const urlTab = new URLSearchParams(window.location.search).get('type');
+        if (urlTab && ['api','added','zhcet'].includes(urlTab)) switchTab(urlTab);
+    </script>
+</body>
+</html>

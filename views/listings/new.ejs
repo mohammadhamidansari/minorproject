@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Listing | CareerPortal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background: #f5f6fa; }
+
+        .form-hero {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            padding: 40px 0 32px; color: #fff;
+        }
+        .form-hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; }
+
+        .form-card {
+            background: #fff; border-radius: 20px;
+            padding: 40px; box-shadow: 0 4px 24px rgba(0,0,0,.07);
+            max-width: 680px; margin: 40px auto;
+        }
+        .form-label { font-weight: 600; font-size: .85rem; color: #374151; margin-bottom: 6px; }
+        .form-control, .form-select {
+            border-radius: 10px; padding: 10px 14px;
+            border: 1.5px solid #e5e7eb; font-family: 'DM Sans', sans-serif;
+            transition: border-color .2s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #059669; box-shadow: 0 0 0 3px rgba(5,150,105,.1);
+        }
+        .btn-submit {
+            background: #059669; color: #fff; border: none;
+            padding: 12px 32px; border-radius: 10px;
+            font-weight: 700; font-size: 1rem; cursor: pointer;
+            transition: all .2s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-submit:hover { background: #047857; transform: translateY(-1px); }
+
+        .tip-box {
+            background: #f0fdf4; border: 1px solid #d1fae5;
+            border-radius: 12px; padding: 16px 18px; margin-bottom: 28px;
+        }
+        .tip-box p { margin: 0; font-size: .85rem; color: #047857; }
+    </style>
+</head>
+<body>
+    <%- include("../includes/navbar.ejs") %>
+
+    <div class="form-hero">
+        <div class="container">
+            <div style="font-size:.8rem;opacity:.7;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Community</div>
+            <h1><i class="fas fa-plus-circle me-2"></i>Add a Listing</h1>
+            <p style="opacity:.8;margin:0;">Share an internship or job opportunity with fellow AMU students</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <div class="tip-box">
+                <p><i class="fas fa-lightbulb me-2"></i><strong>Tip:</strong> Share opportunities you've come across — help your peers discover great roles! Only share genuine opportunities.</p>
+            </div>
+
+            <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger rounded-3"><%= error %></div>
+            <% } %>
+
+            <form action="/new" method="POST">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Job / Internship Title <span class="text-danger">*</span></label>
+                        <input type="text" name="title" class="form-control" placeholder="e.g. Frontend Developer Intern" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Company Name <span class="text-danger">*</span></label>
+                        <input type="text" name="company" class="form-control" placeholder="e.g. Tata Consultancy Services" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Location <span class="text-danger">*</span></label>
+                        <input type="text" name="location" class="form-control" placeholder="e.g. Bangalore / Remote" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Application Link</label>
+                        <input type="url" name="applyUrl" class="form-control" placeholder="https://company.com/apply (leave blank if N/A)">
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Description <span class="text-danger">*</span></label>
+                        <textarea name="description" class="form-control" rows="5"
+                            placeholder="Describe the role, eligibility criteria, stipend, duration, skills needed..." required></textarea>
+                        <div class="form-text text-muted">Include as many details as you know — stipend, duration, eligibility, skills etc.</div>
+                    </div>
+
+                    <div class="col-12 pt-2 d-flex gap-3 align-items-center">
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i> Post Listing
+                        </button>
+                        <a href="/home?type=added" class="btn btn-outline-secondary rounded-3">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

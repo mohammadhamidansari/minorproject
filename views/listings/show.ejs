@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= job.title %> | CareerPortal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background: #f5f6fa; }
+
+        .job-hero {
+            background: linear-gradient(135deg, #0052ff 0%, #003dd4 100%);
+            padding: 48px 0 40px;
+            color: #fff;
+        }
+        .job-hero-inner { max-width: 800px; margin: auto; padding: 0 24px; }
+        .api-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,.2); padding: 5px 12px;
+            border-radius: 100px; font-size: .78rem; font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .logo-wrap {
+            width: 88px; height: 88px;
+            background: #fff; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 10px; flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,.12);
+        }
+
+        .detail-card {
+            background: #fff; border-radius: 16px;
+            padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,.06);
+            margin-bottom: 20px;
+        }
+        .detail-card h5 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 16px; }
+
+        .meta-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; margin-bottom: 28px; }
+        .meta-item { background: #f8f9fa; border-radius: 10px; padding: 14px 16px; }
+        .meta-item .label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin-bottom: 4px; }
+        .meta-item .value { font-weight: 600; color: #111; font-size: .95rem; }
+
+        .tag-chip { display: inline-block; padding: 4px 12px; background: #f3f4f6; border-radius: 100px; font-size: .78rem; margin: 3px; color: #374151; font-weight: 500; }
+
+        .btn-apply-main {
+            background: #0052ff; color: #fff; border: none;
+            padding: 14px 32px; border-radius: 12px;
+            font-weight: 700; font-size: 1rem; width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all .25s; text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0,82,255,.3);
+        }
+        .btn-apply-main:hover { background: #003dd4; transform: translateY(-2px); color: #fff; box-shadow: 0 8px 28px rgba(0,82,255,.4); }
+
+        .description-box { line-height: 1.85; color: #374151; font-size: .95rem; }
+        .description-box h1, .description-box h2, .description-box h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 20px 0 10px; }
+        .description-box ul { padding-left: 20px; }
+        .description-box li { margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+    <%- include("../includes/navbar.ejs") %>
+
+    <!-- Job Hero -->
+    <div class="job-hero">
+        <div class="job-hero-inner">
+            <div class="api-badge"><i class="fas fa-globe"></i> Global Job Board</div>
+            <div class="d-flex align-items-center gap-4 flex-wrap">
+                <div class="logo-wrap">
+                    <img src="<%= job.company_logo %>"
+                         alt="<%= job.company_name %>"
+                         style="max-width:68px;max-height:68px;object-fit:contain;"
+                         onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(job.company_name) %>&background=0052ff&color=fff&size=128';">
+                </div>
+                <div>
+                    <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;margin-bottom:6px;"><%= job.title %></h1>
+                    <p style="opacity:.85;font-size:1rem;margin:0;"><%= job.company_name %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4" style="max-width:800px;">
+
+        <!-- Meta -->
+        <div class="detail-card">
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <div class="label"><i class="fas fa-map-marker-alt me-1"></i>Location</div>
+                    <div class="value"><%= job.location %></div>
+                </div>
+                <div class="meta-item">
+                    <div class="label"><i class="fas fa-laptop me-1"></i>Work Type</div>
+                    <div class="value"><%= job.remote ? '🌐 Remote' : '🏢 In-Office' %></div>
+                </div>
+            </div>
+
+            <!-- Tags -->
+            <% if (job.tags && job.tags.length > 0) { %>
+            <div class="mb-4">
+                <h5>Skills & Tags</h5>
+                <% job.tags.forEach(tag => { %>
+                    <span class="tag-chip"><%= tag %></span>
+                <% }) %>
+            </div>
+            <% } %>
+
+            <!-- Apply Button -->
+            <a href="<%= job.url %>" target="_blank" class="btn-apply-main">
+                Apply Now <i class="fas fa-external-link-alt"></i>
+            </a>
+            <p class="text-center text-muted small mt-2">Opens the company's official application page</p>
+        </div>
+
+        <!-- Description -->
+        <div class="detail-card">
+            <h5><i class="fas fa-file-alt me-2" style="color:#0052ff;"></i>About the Role</h5>
+            <div class="description-box">
+                <%- job.description %>
+            </div>
+        </div>
+
+        <!-- Feedback / Share -->
+        <div class="detail-card">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Found this helpful?</h5>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="this.innerHTML='👍 Liked';this.disabled=true;">
+                        <i class="fas fa-thumbs-up me-1"></i>Like
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="navigator.clipboard.writeText(window.location.href);this.innerHTML='✓ Copied';this.disabled=true;">
+                        <i class="fas fa-share me-1"></i>Share
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <a href="/home?type=api" class="text-muted small">
+                <i class="fas fa-arrow-left me-1"></i>Back to Global Jobs
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
