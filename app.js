@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const axios = require("axios");
 const mongoose = require("mongoose");
+const MongoStore = require('connect-mongo');
 const multer = require("multer");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
@@ -45,11 +46,24 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URL, // Path to your database
+        touchAfter: 24 * 3600 // Performance optimization
+    }),
     secret: process.env.Admin_Secret_Key,
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 }
+    cookie: {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    }
 }));
+// app.use(session({
+//     secret: process.env.Admin_Secret_Key,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 }
+// }));
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.currUser = req.session.user_id || null;
