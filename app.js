@@ -47,8 +47,8 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URL, // Path to your database
-        touchAfter: 24 * 3600 // Performance optimization
+        mongoUrl: process.env.MONGO_URL, // Ensure this exists in your .env
+        touchAfter: 24 * 3600
     }),
     secret: process.env.Admin_Secret_Key,
     resave: false,
