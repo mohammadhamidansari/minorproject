@@ -9,6 +9,8 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const flash = require("connect-flash");
 
+require("dotenv").config();
+
 // Models
 const User = require("./models/user.js");
 const Admin = require("./models/admin.js");
@@ -43,7 +45,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-    secret: process.env.SESSION_SECRET || "careerportal-secret-2025",
+    secret: process.env.Admin_Secret_Key,
     resave: false,
     saveUninitialized: false,
     cookie: { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 }
@@ -57,8 +59,9 @@ app.use((req, res, next) => {
     next();
 });
 
+
 // ── DB ───────────────────────────────────────────────────────────────────────
-mongoose.connect("mongodb://127.0.0.1:27017/minorproject")
+mongoose.connect(process.env.atlas_URL)
     .then(() => console.log("✅ Connected to MongoDB"))
     .catch(err => console.log("❌ MongoDB error:", err));
 
@@ -175,7 +178,7 @@ app.post("/zhcet/:id/apply", isLoggedIn, upload.single("cv"), async (req, res) =
         const listing = await ZhcetListing.findById(req.params.id);
         if (!listing) return res.status(404).send("Listing not found");
 
-        // Check duplicate
+        
         const existing = await ZhcetApplication.findOne({ listing: req.params.id, user: req.session.user_id });
         if (existing) {
             req.flash("error", "You have already applied for this listing.");
@@ -243,7 +246,7 @@ app.get("/logout", (req, res) => {
 });
 
 // ── ADMIN ROUTES ──────────────────────────────────────────────────────────────
-const ADMIN_SECRET = process.env.ADMIN_SECRET || "zhcet-admin-2025"; // Change this!
+const ADMIN_SECRET = process.env.Admin_Secret_Key;
 
 app.get("/admin/login", (req, res) => res.render("./admin/login.ejs"));
 app.post("/admin/login", async (req, res) => {
