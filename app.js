@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const axios = require("axios");
 const mongoose = require("mongoose");
-const MongoStore = require('connect-mongo');
+const MongoStore = require("connect-mongo").default;
 const multer = require("multer");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
@@ -47,7 +47,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URL, // Ensure this exists in your .env
+        mongoUrl: process.env.atlas_URL,
         touchAfter: 24 * 3600
     }),
     secret: process.env.Admin_Secret_Key,
